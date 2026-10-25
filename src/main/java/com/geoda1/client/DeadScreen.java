@@ -17,8 +17,7 @@ public class DeadScreen extends Screen {
         addRenderableWidget(Button.builder(Component.literal("Menú principal"), b -> {
             Minecraft mc = Minecraft.getInstance();
             if (mc.level != null) mc.level.disconnect();
-            mc.disconnect();
-            mc.setScreen(new TitleScreen());
+            mc.clearLevel(new TitleScreen());
         }).bounds(width / 2 - 100, height / 2 + 34, 200, 20).build());
     }
 
