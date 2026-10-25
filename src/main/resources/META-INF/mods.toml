@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="All rights reserved"
+
+[[mods]]
+modId="geoda1"
+version="1.0.0"
+displayName="Geoda1"
+logoFile="logo.png"
+description='''
+Geoda1: modo hardcore con 2 vidas. Si perdés las dos, tenés 1 hora para que te revivan con un corazón dorado en el frasco.
+'''
+
+[[dependencies.geoda1]]
+modId="forge"
+mandatory=true
+versionRange="[47,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.geoda1]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.21)"
+ordering="NONE"
+side="BOTH"

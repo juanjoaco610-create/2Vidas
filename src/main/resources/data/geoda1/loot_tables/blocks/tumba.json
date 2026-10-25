@@ -1,0 +1,32 @@
+{
+ "type": "minecraft:block",
+ "pools": [
+  {
+   "rolls": 1,
+   "entries": [
+    {
+     "type": "minecraft:item",
+     "name": "geoda1:tumba",
+     "functions": [
+      {
+       "function": "minecraft:copy_nbt",
+       "source": "block_entity",
+       "ops": [
+        {
+         "source": "Owner",
+         "target": "BlockEntityTag.Owner",
+         "op": "replace"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "conditions": [
+    {
+     "condition": "minecraft:survives_explosion"
+    }
+   ]
+  }
+ ]
+}
