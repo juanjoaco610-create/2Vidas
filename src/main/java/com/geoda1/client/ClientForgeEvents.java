@@ -10,7 +10,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderNameTagEvent;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -27,29 +26,7 @@ public class ClientForgeEvents {
             if (mc.player != null && mc.screen == null) mc.setScreen(new PlayersScreen());
     }
 
-    /** Reemplaza los corazones vanilla por los de Geoda1. */
-    @SubscribeEvent
-    public static void healthPre(RenderGuiOverlayEvent.Pre e) {
-        if (e.getOverlay() != VanillaGuiOverlay.PLAYER_HEALTH.type()) return;
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.options.hideGui || mc.gameMode == null || !mc.gameMode.canHurtPlayer()) return;
-        if (!(mc.getCameraEntity() instanceof Player p) || !(mc.gui instanceof ForgeGui fg)) return;
-        e.setCanceled(true);
-        GuiGraphics g = e.getGuiGraphics();
-        int w = g.guiWidth(), h = g.guiHeight();
-        int hearts = (int) Math.ceil(p.getMaxHealth() / 2f);
-        float hp = p.getHealth();
-        for (int i = 0; i < hearts; i++) {
-            int x = w / 2 - 91 + (i % 10) * 8;
-            int y = h - fg.leftHeight - (i / 10) * 10;
-            g.blit(Tex.EMPTY, x, y, 9, 9, 0, 0, 12, 12, 12, 12);
-            if (hp >= (i + 1) * 2) g.blit(Tex.FULL, x, y, 9, 9, 0, 0, 12, 12, 12, 12);
-            else if (hp > i * 2) g.blit(Tex.HALF, x, y, 9, 9, 0, 0, 12, 12, 12, 12);
-        }
-        fg.leftHeight += ((hearts + 9) / 10) * 10;
-    }
-
-    /** Vidas a la izquierda del inventario (hotbar). */
+    /** Vidas a la izquierda del inventario (hotbar). Solo se dibujan las vidas que quedan. */
     @SubscribeEvent
     public static void livesPost(RenderGuiOverlayEvent.Post e) {
         if (e.getOverlay() != VanillaGuiOverlay.HOTBAR.type()) return;
@@ -59,10 +36,10 @@ public class ClientForgeEvents {
         int lives = me == null ? 2 : me.lives();
         GuiGraphics g = e.getGuiGraphics();
         int w = g.guiWidth(), h = g.guiHeight();
-        int slots = Math.max(2, Math.min(lives, 10));
-        for (int i = 0; i < slots; i++) {
+        int shown = Math.min(lives, 10);
+        for (int i = 0; i < shown; i++) {
             int x = w / 2 - 91 - 6 - (i + 1) * 15;
-            g.blit(i < lives ? Tex.FULL : Tex.BROKEN, x, h - 22, 14, 14, 0, 0, 12, 12, 12, 12);
+            g.blit(Tex.FULL, x, h - 22, 14, 14, 0, 0, 12, 12, 12, 12);
         }
     }
 
